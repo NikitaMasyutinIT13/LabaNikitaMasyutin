@@ -35,12 +35,12 @@ int main()
             return a.second > b.second;
         });
 
-    cout << "Частота символов в строке (по убыванию):\n";
+    cout << "Частота символов в строке:\n";
     float sum = 0;
     for (const auto& pair : freq_vector) {
         cout << "'";
         if (pair.first == ' ') {
-            cout << "ПРОБЕЛ";
+            cout << "Пробел";
         }
         else {
             cout << pair.first;
