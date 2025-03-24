@@ -1,0 +1,54 @@
+#include <iostream>
+#include <map>
+#include <vector>
+#include <algorithm> 
+#include <utility>   
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "Ru");
+    string s = "ПОСТАВИВ БУТЫЛКУ НА ПОДОКОННИК ЧТОБЫ БЫЛО УДОБНО ДОСТАТЬ ЕЕ ДОЛОХОВ "
+        "ОСТОРОЖНО И ТИХО ПОЛЕЗ В ОКНО СПУСТИВ НОГИ И РАСПЕРЕВШИСЬ ОБЕИМИ РУКАМИ В КРАЯ "
+        "ОКНА ОН ПРИМЕРИЛСЯ УСЕЛСЯ ОПУСТИЛ РУКИ ПОДВИНУЛСЯ НАПРАВО НАЛЕВО И ДОСТАЛ "
+        "БУТЫЛКУ АНАТОЛЬ ПРИНЕС ДВЕ СВЕЧКИ И ПОСТАВИЛ ИХ НА ПОДОКОННИК ХОТЯ БЫЛО УЖЕ "
+        "СОВСЕМ СВЕТЛО СПИНА ДОЛОХОВА В БЕЛОЙ РУБАШКЕ И КУРЧАВАЯ ГОЛОВА ЕГО БЫЛИ ОСВЕЩЕНЫ "
+        "С ОБЕИХ СТОРОН ВСЕ СТОЛПИЛИСЬ У ОКНА АНГЛИЧАНИН СТОЯЛ ВПЕРЕДИ ПЬЕР УЛЫБАЛСЯ И "
+        "НИЧЕГО НЕ ГОВОРИЛ ОДИН ИЗ ПРИСУТСТВУЮЩИХ ПОСТАРШЕ ДРУГИХ С ИСПУГАННЫМ И "
+        "СЕРДИТЫМ ЛИЦОМ ВДРУГ ПРОДВИНУЛСЯ ВПЕРЕД И ХОТЕЛ СХВАТИТЬ ДОЛОХОВА ЗА РУБАШКУ";
+        
+    map<char, float> symbols;
+
+    for (char c : s) {
+        symbols[c]++;
+    }
+
+    int size = s.size();
+    for (auto& pair : symbols) {
+        pair.second = pair.second / size;
+    }
+
+    vector<pair<char, float>> freq_vector(symbols.begin(), symbols.end());
+
+    sort(freq_vector.begin(), freq_vector.end(),
+        [](const pair<char, float>& a, const pair<char, float>& b) {
+            return a.second > b.second;
+        });
+
+    cout << "Частота символов в строке (по убыванию):\n";
+    float sum = 0;
+    for (const auto& pair : freq_vector) {
+        cout << "'";
+        if (pair.first == ' ') {
+            cout << "ПРОБЕЛ";
+        }
+        else {
+            cout << pair.first;
+        }
+        cout << "': " << pair.second << "\n";
+        sum += pair.second;
+    }
+    cout << "Сумма частот: " << sum << endl;
+
+    return 0;
+}
