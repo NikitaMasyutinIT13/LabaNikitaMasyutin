@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include<iomanip>
+
+using namespace std;
+
+string decryptBlock(const string& ciphertext, const string& key) {
+    int keyLength = key.length();
+    int textLength = ciphertext.length();
+    int blockSize = keyLength;
+    int numBlocks = (textLength + blockSize - 1) / blockSize;
+
+    string plaintext;
+    plaintext.resize(textLength);
+
+    for (int i = 0; i < numBlocks; ++i) {
+        int startPos = i * blockSize;
+        int endPos = min(startPos + blockSize, textLength);
+        int blockLength = endPos - startPos;
+
+        string block = ciphertext.substr(startPos, blockLength);
+
+        vector<int> inversePermutation(blockSize);
+        for (int j = 0; j < blockSize; ++j) {
+            int destPos = key[j] - '1'; 
+            inversePermutation[destPos] = j;
+        }
+
+        for (int j = 0; j < blockLength; ++j) {
+            int originalPos = inversePermutation[j];
+            if (originalPos < blockLength) {
+                plaintext[startPos + j] = block[originalPos];
+            }
+        }
+    }
+
+    return plaintext;
+}
+
+int main() {
+    setlocale(LC_ALL, "Ru");
+    string ciphertext = "вз оЯш вл елужчкауПе ч.ьылба  ркаож тоапнла,н еи нве йарви л оябсе д,одвьнлоо скооршй ыднлбе дяновк.я артуСхна  ав меосиопвр о оытсвалчае,точ  о галнуя,а хнсл ыеш. тЧитбы лоо нсе йелда т Я? ьоатрибл кя сспоемлуко т,ой ысрил епдед епрею ьич дколпаваылд ог овнхв оьрт.с о";
+    string key = "342516";
+
+    string plaintext = decryptBlock(ciphertext, key);
+    cout << "Дешифрованный текст: " << plaintext << endl;
+
+    return 0;
+}
